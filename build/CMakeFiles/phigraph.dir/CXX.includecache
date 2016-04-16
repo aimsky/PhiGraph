@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wubo/work/project/PhiGraph/include/IO.h
+iostream
+-
+fstream
+-
+stdlib.h
+-
+parallel.h
+/home/wubo/work/project/PhiGraph/include/parallel.h
+malloc.h
+-
+
+/home/wubo/work/project/PhiGraph/include/parallel.h
+omp.h
+-
+
+/home/wubo/work/project/PhiGraph/src/main.cpp
+stdio.h
+-
+../include/IO.h
+/home/wubo/work/project/PhiGraph/include/IO.h
+
