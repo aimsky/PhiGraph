@@ -1,1 +1,1 @@
-/usr/bin/c++      CMakeFiles/phigraph.dir/src/main.cpp.o  -o bin/phigraph 
+/usr/bin/c++      CMakeFiles/phigraph.dir/apps/BFS.cpp.o  -o bin/phigraph 

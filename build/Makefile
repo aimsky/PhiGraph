@@ -48,10 +48,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/wubo/work/project/PhiGraph
+CMAKE_SOURCE_DIR = /home/wubo/project/PhiGraph
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/wubo/work/project/PhiGraph/build
+CMAKE_BINARY_DIR = /home/wubo/project/PhiGraph/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wubo/work/project/PhiGraph/build/CMakeFiles /home/wubo/work/project/PhiGraph/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wubo/project/PhiGraph/build/CMakeFiles /home/wubo/project/PhiGraph/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wubo/work/project/PhiGraph/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wubo/project/PhiGraph/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,32 +123,32 @@ phigraph/fast:
 	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/build
 .PHONY : phigraph/fast
 
-src/main.o: src/main.cpp.o
+apps/BFS.o: apps/BFS.cpp.o
 
-.PHONY : src/main.o
+.PHONY : apps/BFS.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+apps/BFS.cpp.o:
+	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/apps/BFS.cpp.o
+.PHONY : apps/BFS.cpp.o
 
-src/main.i: src/main.cpp.i
+apps/BFS.i: apps/BFS.cpp.i
 
-.PHONY : src/main.i
+.PHONY : apps/BFS.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+apps/BFS.cpp.i:
+	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/apps/BFS.cpp.i
+.PHONY : apps/BFS.cpp.i
 
-src/main.s: src/main.cpp.s
+apps/BFS.s: apps/BFS.cpp.s
 
-.PHONY : src/main.s
+.PHONY : apps/BFS.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+apps/BFS.cpp.s:
+	$(MAKE) -f CMakeFiles/phigraph.dir/build.make CMakeFiles/phigraph.dir/apps/BFS.cpp.s
+.PHONY : apps/BFS.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... phigraph"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
+	@echo "... apps/BFS.o"
+	@echo "... apps/BFS.i"
+	@echo "... apps/BFS.s"
 .PHONY : help
 
 

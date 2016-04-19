@@ -6,25 +6,43 @@
 
 #IncludeRegexTransform: 
 
-/home/wubo/work/project/PhiGraph/include/IO.h
-iostream
--
+/home/wubo/project/PhiGraph/apps/BFS.cpp
+../src/core.hpp
+/home/wubo/project/PhiGraph/src/core.hpp
+
+/home/wubo/project/PhiGraph/src/IO.hpp
+parallel.hpp
+/home/wubo/project/PhiGraph/src/parallel.hpp
 fstream
+-
+iostream
 -
 stdlib.h
 -
-parallel.h
-/home/wubo/work/project/PhiGraph/include/parallel.h
 malloc.h
 -
 
-/home/wubo/work/project/PhiGraph/include/parallel.h
-omp.h
+/home/wubo/project/PhiGraph/src/command.hpp
+cstring
+-
+fstream
+-
+iostream
+-
+stdlib.h
+-
+string
 -
 
-/home/wubo/work/project/PhiGraph/src/main.cpp
+/home/wubo/project/PhiGraph/src/core.hpp
+IO.hpp
+/home/wubo/project/PhiGraph/src/IO.hpp
+command.hpp
+/home/wubo/project/PhiGraph/src/command.hpp
 stdio.h
 -
-../include/IO.h
-/home/wubo/work/project/PhiGraph/include/IO.h
+
+/home/wubo/project/PhiGraph/src/parallel.hpp
+omp.h
+-
 

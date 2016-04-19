@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/phigraph.dir/src/main.cpp.o"
+  "CMakeFiles/phigraph.dir/apps/BFS.cpp.o"
   "bin/phigraph.pdb"
   "bin/phigraph"
 )

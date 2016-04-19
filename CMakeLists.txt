@@ -14,16 +14,16 @@ SET(CMAKE_INSTALL_PREFIX /usr/local)
 
 #head file path
 
-#INCLUDE_DIRECTORIES(
+INCLUDE_DIRECTORIES(
 
-#include
+src
 
-#)
+)
 
 
 #source directory
 
-AUX_SOURCE_DIRECTORY(src DIR_SRCS)
+AUX_SOURCE_DIRECTORY(apps DIR_SRCS)
 
 #set environment variable
 
