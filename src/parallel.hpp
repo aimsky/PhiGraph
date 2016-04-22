@@ -1,5 +1,5 @@
-#ifndef _PARALLEL_H
-#define _PARALLEL_H
+#ifndef PARALLEL_H
+#define PARALLEL_H
 
 #include <omp.h>
 #define parallel_main main

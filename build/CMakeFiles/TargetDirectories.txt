@@ -1,3 +1,0 @@
-/home/wubo/project/PhiGraph/build/CMakeFiles/edit_cache.dir
-/home/wubo/project/PhiGraph/build/CMakeFiles/rebuild_cache.dir
-/home/wubo/project/PhiGraph/build/CMakeFiles/phigraph.dir

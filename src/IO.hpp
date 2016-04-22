@@ -1,12 +1,12 @@
-#ifndef DEF_IO_H
-#define DEF_IO_H
+#ifndef IO_H
+#define IO_H
 
-#include "parallel.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
 #include <malloc.h>
-#include "utils.h"
+#include "utils.hpp"
+#include "parallel.hpp"
 
 
 using namespace std;

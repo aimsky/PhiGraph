@@ -1,5 +1,5 @@
-#ifndef _CORE_HPP
-#define _CORE_HPP
+#ifndef CORE_HPP
+#define CORE_HPP
 
 #include "IO.hpp"
 #include "command.hpp"
