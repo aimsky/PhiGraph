@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+/build/CMakeFiles/*
+/build/cmake_install.cmake
+/build/CMakeCache.txt
+/build/Makefile
+/build/bin/*
