@@ -27,6 +27,7 @@
 *.out
 *.app
 #cmake
+/build/bin/*
 /build/CMakeFiles
 /build/cmake_install.cmake
 /build/CMakeCache.txt
