@@ -5,8 +5,12 @@
 #include <iostream>
 #include <stdlib.h>
 #include <malloc.h>
+#include <stdio.h>
+#include <string.h>
 #include "utils.hpp"
 #include "parallel.hpp"
+#include "vertex.hpp"
+#include "graph.hpp"
 
 
 using namespace std;
@@ -32,6 +36,49 @@ class PhiIO {
 public:
   PhiIO() {}
 
+  Graph<Vertex> loadGraphFromFile(char* fileName){
+    seq<char> temp = readStringFromFile(fileName);
+    char * _string = temp.get();
+    temp.del();//set free memory
+    //split string by \n
+    char * word = strtok (_string,split);
+    if(word == (string)"AdjacencyGraph"){
+      word = strtok (NULL,split);
+      vertexNum = atol(word);
+      printf("vertexNum=%ld\n",vertexNum );
+      word = strtok (NULL,split);
+      edgeNum = atol(word);
+      printf("edgeNum=%ld\n",edgeNum );
+
+      offset = phimalloc(uphiLong,vertexNum);
+      edges = phimalloc(uphiLong,edgeNum);
+    }
+    //set string to long
+    for(long i = 0; i < vertexNum; i++){
+      word = strtok (NULL,split);
+      offset[i] = atol(word);
+      //printf("%ld\n",offset[i] );
+    }
+    for(long i = 0; i < edgeNum; i++){
+      word = strtok (NULL,split);
+      edges[i] = atol(word);
+      //printf("%ld\n",edges[i] );
+    }
+
+    //set vertex
+    Vertex* v = phimalloc(Vertex,vertexNum);
+
+    parallel_for (phiLong i=0; i < vertexNum; i++) {
+      phiLong start = offset[i];
+      phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
+      v[i].setOutDegree(l);
+      v[i].setOutVertexes(edges+start);
+
+    }
+    return Graph<Vertex>(v,vertexNum,edgeNum);
+
+  }
+
   seq<char> readStringFromFile(char *fileName) {
     ifstream file(fileName, ios::in | ios::binary | ios::ate);
     if (!file.is_open()) {
@@ -46,6 +93,19 @@ public:
     file.close();
     return seq<char>(bytes, n);
   }
+  void iofree(){
+    free(offset);
+    free(edges);
+  }
+private:
+  // char * _string;
+  // char * word;
+  const char * split = "\n";
+  uphiLong* offset;
+  uphiLong* edges;
+  phiLong vertexNum;
+  phiLong edgeNum;
 };
 };
+
 #endif

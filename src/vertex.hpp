@@ -3,19 +3,22 @@
 #include "utils.hpp"
 class Vertex{
 public:
-  Vertex(uPhiLong* invertexes,uPhiLong* outvertexes,PhiLong indegree,PhiLong outdegree);
-  uPhiLong* getInVertexes () { return inVertexes; }
-  uPhiLong* getoutVertexes () { return outVertexes; }
-  uPhiLong getInVertexes(uPhiLong j) { return inVertexes[j]; }
-  uPhiLong getOutVertexes(uPhiLong j) { return outVertexes[j]; }
-  void setinVertexes(uPhiLong* _i) { inVertexes = _i; }
-  void setoutVertexes(uPhiLong* _i) { outVertexes = _i; }
+  Vertex(uphiLong* invertexes,uphiLong* outvertexes,phiLong indegree,phiLong outdegree);
+  uphiLong* getInVertexes () { return inVertexes; }
+  uphiLong* getOutVertexes () { return outVertexes; }
+  uphiLong getInVertexes(uphiLong j) { return inVertexes[j]; }
+  uphiLong getOutVertexes(uphiLong j) { return outVertexes[j]; }
+  uphiLong getOutDegree() { return outDegree; }
+  uphiLong getInDegree() { return inDegree; }
+  void setInVertexes(uphiLong* _i) { inVertexes = _i; }
+  void setOutVertexes(uphiLong* _i) { outVertexes = _i; }
+  void setOutDegree(uphiLong _i) { outDegree = _i; }
+  void setInDegree(uphiLong _i) { inDegree = _i; }
 private:
-  uPhiLong* inVertexes;
-  uPhiLong* outVertexes;
-  PhiLong inDegree;
-  PhiLong outDegree;
+  uphiLong* inVertexes;
+  uphiLong* outVertexes;
+  phiLong inDegree;
+  phiLong outDegree;
 };
-
 
 #endif
