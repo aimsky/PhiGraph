@@ -1,6 +1,6 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
-
+#include <limits.h>
 #define phimalloc(_n, _m) (_n *)malloc((_m) * sizeof(_n))
 typedef long phiLong;
 typedef unsigned long uphiLong;

@@ -28,6 +28,9 @@ public:
     _v = NULL;
     num = 0;
   }
+  ~seq(){
+    del();
+  }
   seq(pg *v, long n) : _v(v), num(n) {}
   void del() { free(_v); }
 };
@@ -39,7 +42,8 @@ public:
   Graph<Vertex> loadGraphFromFile(char* fileName){
     seq<char> temp = readStringFromFile(fileName);
     char * _string = temp.get();
-    temp.del();//set free memory
+    //printf("%s\n",_string );
+    //temp.del();//set free memory
     //split string by \n
     char * word = strtok (_string,split);
     if(word == (string)"AdjacencyGraph"){
@@ -64,7 +68,6 @@ public:
       edges[i] = atol(word);
       //printf("%ld\n",edges[i] );
     }
-
     //set vertex
     Vertex* v = phimalloc(Vertex,vertexNum);
 
@@ -100,7 +103,7 @@ public:
 private:
   // char * _string;
   // char * word;
-  const char * split = "\n";
+  const char * split = "\n\t\r ";
   uphiLong* offset;
   uphiLong* edges;
   phiLong vertexNum;
