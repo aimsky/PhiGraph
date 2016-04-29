@@ -16,21 +16,32 @@ public:
   PhiGraphProgram(){};
   virtual bool condition(){};
   virtual bool update(){};
+  virtual void gather(){};
+  virtual void setter(){};
+
 };
 template<class Program>
-void vertexUpdate(Graph<Vertex>& phigraph,VertexSubset& frontier,Program& app){
+VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
   //printf("vertexUpdate\n");
   //phiLong* nextIndices = phi
-  parallel_for(uphiLong i = 0;i < frontier.m;i++){
-    uphiLong curVertex = frontier.s[i];
+  VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
+  parallel_for(uphiLong i = 0;i < frontier->m;i++){
+    uphiLong curVertex = frontier->vertex[i];
     uphiLong degree = phigraph.v[curVertex].getOutDegree();
     //printf("vertex[%ld]:degree=%ld\n",curVertex,degree);
     parallel_for(uphiLong j = 0;j < degree;j++){
-      if(app.update(curVertex,phigraph.v[curVertex].getOutVertexes(j)))
-        printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
+      #pragma omp critical
+      if(app.update(curVertex,phigraph.v[curVertex].getOutVertexes(j))){
+        //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
+        nextFrontier->add(phigraph.v[curVertex].getOutVertexes(j));
+      }
+
       //printf("%ld ",phigraph.v[curVertex].getOutVertexes(j));
     }
   }
+
+  return nextFrontier;
+
 };
 
 int parallel_main(int argc, char *argv[]) {
