@@ -15,19 +15,23 @@ public:
   void setOutDegree(uphiLong _i) { outDegree = _i; }
   void setInDegree(uphiLong _i) { inDegree = _i; }
 
-  void setOutWeight(uphiLong* _i){ outWeight = _i;}
-  uphiLong getOutWeight(uphiLong j){
-    if(j < outDegree && j >= 0)
-      return outWeight[j];
-    else
-      return UINT_T_MAX;
+  void setOutWeight(phiDouble* _i){ outWeight = _i;}
+  phiDouble getOutWeight(uphiLong j){ return outWeight[j];}
+
+  void setVisited(){
+    visited = true;
   }
+  bool isVisited(){
+    return visited;
+  }
+
 private:
   uphiLong* inVertexes;
   uphiLong* outVertexes;
-  uphiLong* outWeight;
+  phiDouble* outWeight;
   phiLong inDegree;
   phiLong outDegree;
+  bool visited = false;
 };
 
 #endif

@@ -23,45 +23,38 @@ public:
 };
 template<class Program>
 VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
-  //printf("vertexUpdate\n");
-  //phiLong* nextIndices = phi
+
   VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
-  uphiLong temp ;
+  //uphiLong temp ;
   parallel_for(uphiLong i = 0;i < frontier->m;i++){
     uphiLong curVertex = frontier->vertex[i];
-    //uphiLong degree = phigraph.v[curVertex].getOutDegree();
-
-      //#pragma omp critical
-      temp = app.update(phigraph,curVertex);
-      #pragma omp critical
-      if(temp != UINT_T_MAX){
-        nextFrontier->add(temp);
-      }
-
-
+    app.update(phigraph,nextFrontier,curVertex);
+    // temp = app.update(phigraph,curVertex);
+    // #pragma omp critical
+    // if(temp != UINT_T_MAX){
+    //   nextFrontier->add(temp);
+    // }
   }
-
   return nextFrontier;
-
 };
 
 template<class Program>
 VertexSubset* edgeUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
-  //printf("vertexUpdate\n");
-  //phiLong* nextIndices = phi
+
   VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
   parallel_for(uphiLong i = 0;i < frontier->m;i++){
     uphiLong curVertex = frontier->vertex[i];
-    uphiLong degree = phigraph.v[curVertex].getOutDegree();
-    //printf("vertex[%ld]:degree=%ld\n",curVertex,degree);
-    parallel_for(uphiLong j = 0;j < degree;j++){
-      #pragma omp critical
-      if(app.update(curVertex,phigraph.v[curVertex].getOutVertexes(j))){
-        //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
-        nextFrontier->add(phigraph.v[curVertex].getOutVertexes(j));
-      }
-      //printf("%ld ",phigraph.v[curVertex].getOutVertexes(j));
-    }
+    app.update(phigraph,nextFrontier,curVertex);
+    // uphiLong degree = phigraph.v[curVertex].getOutDegree();
+    // //printf("vertex[%ld]:degree=%ld\n",curVertex,degree);
+    // parallel_for(uphiLong j = 0;j < degree;j++){
+    //   #pragma omp critical
+    //   if(app.update(curVertex,phigraph.v[curVertex].getOutVertexes(j))){
+    //     //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
+    //     nextFrontier->add(phigraph.v[curVertex].getOutVertexes(j));
+    //   }
+    //   //printf("%ld ",phigraph.v[curVertex].getOutVertexes(j));
+    // }
   }
   return nextFrontier;
 };
@@ -72,8 +65,7 @@ int parallel_main(int argc, char *argv[]) {
   char *iFile = cmd.getArgument(0);
   PhiIO* io = new PhiIO();
   Graph<Vertex> graph = io->loadGraphFromFile(iFile);
-  //io->iofree();
-  //char *s = (io->readStringFromFile(iFile)).get();
+
   startTime();
   compute(graph);
   nextTime("Running time");

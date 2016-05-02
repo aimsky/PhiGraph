@@ -5,24 +5,24 @@ class SSSP:public PhiGraphProgram{
 
 public:
   uphiLong* visit;
-  uphiLong* distance; //save the shortest distance
+  phiDouble* distance; //save the shortest distance
 
   SSSP(phiLong vertexNum,uphiLong start,Graph<Vertex> & graph){ //sssp initial
     visit = phimalloc(uphiLong,vertexNum);
     parallel_for(long i=0;i < vertexNum;i++) visit[i] = 0;
     visit[start] = 1;
 
-    distance = phimalloc(uphiLong,vertexNum);
+    distance = phimalloc(phiDouble,vertexNum);
     parallel_for(uphiLong i = 0;i < vertexNum;i++){
       distance[i] = UINT_T_MAX;
     }
     parallel_for(uphiLong i = 0;i < graph.v[start].getOutDegree();i++){
       distance[graph.v[start].getOutVertexes(i)] = graph.v[start].getOutWeight(i);
     }
-    distance[start] = 0;
+    distance[start] = 0.0;
 
   }
-  phiLong update(Graph<Vertex> & graph,uphiLong vertexId){
+  phiLong update(Graph<Vertex>& graph,VertexSubset* nextFrontier,uphiLong curVertex){
     uphiLong num = graph.vertexNum;
     uphiLong min = UINT_T_MAX;
     uphiLong nextVertexId = -1;
@@ -48,7 +48,7 @@ public:
     }
 
     printf("nextId:%ld\n", nextVertexId);
-    return nextVertexId;
+    nextFrontier->add(nextVertexId);
   }
 };
 

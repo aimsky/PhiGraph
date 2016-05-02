@@ -2,7 +2,6 @@
 
 class BFS:public PhiGraphProgram{
 
-
 public:
   uphiLong* parents;
 
@@ -10,16 +9,22 @@ public:
     parents = phimalloc(uphiLong,phigraph.vertexNum);
     parallel_for(long i=0;i < phigraph.vertexNum;i++) parents[i] = UINT_T_MAX;
     parents[start] = start;
-
-
+    phigraph.v[start].setVisited();
 
   }
-  bool update(uphiLong s,uphiLong d){
-    if(parents[d] == UINT_T_MAX) { parents[d] = s; return 1; }
-    else {
-    // printf("false\n");
-    // printf("d=%ld,parents=%ld\n",d,parents[d] );
-      return 0;
+  void update(Graph<Vertex>& phigraph,VertexSubset* nextFrontier,uphiLong curVertex){
+
+    uphiLong degree = phigraph.v[curVertex].getOutDegree();
+    //printf("vertex[%ld]:degree=%ld\n",curVertex,degree);
+    parallel_for(uphiLong j = 0;j < degree;j++){
+      phiLong temp = phigraph.v[curVertex].getOutVertexes(j);
+      #pragma omp critical
+      if(!phigraph.v[temp].isVisited()){
+        //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
+        phigraph.v[temp].setVisited();
+        nextFrontier->add(temp);
+      }
+      //printf("%ld ",phigraph.v[curVertex].getOutVertexes(j));
     }
   }
 };
@@ -31,7 +36,7 @@ void compute(Graph<Vertex>& phigraph) {
 
   BFS bfs(phigraph,start);
   while(!frontier->isEmpty()){ //loop until frontier is empty
-    VertexSubset* output = edgeUpdate(phigraph, frontier, bfs);
+    VertexSubset* output = vertexUpdate(phigraph, frontier, bfs);
     printf("vertexSubset:" );
     for(long i = 0;i < output->m;i++){
       printf("%ld ", output->vertex[i]);
@@ -43,13 +48,5 @@ void compute(Graph<Vertex>& phigraph) {
     //printf("frontierdel2\n");
   }
   delete frontier;
-  //free(parents);
-  // for (phiLong i=0; i < phigraph.vertexNum; i++) {
-  //   uphiLong degree = phigraph.v[i].getOutDegree();
-  //   printf("vertex[%ld]:degree=%ld\n",i,degree);
-  //   for(unsigned long j = 0;j<degree;j++){
-  //     printf("%ld ",phigraph.v[i].getOutVertexes(j));
-  //   }
-  //   printf("\n");
-  // }
+
 }

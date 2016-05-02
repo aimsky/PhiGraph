@@ -57,7 +57,7 @@ public:
       offset = phimalloc(uphiLong,vertexNum);
       edges = phimalloc(uphiLong,edgeNum);
       #ifdef WEIGHTED
-      weight = phimalloc(uphiLong,edgeNum);
+      weight = phimalloc(double,edgeNum);
       #endif
     }
     //set string to long
@@ -74,7 +74,7 @@ public:
     #ifdef WEIGHTED
     for(long i = 0; i < edgeNum; i++){
       word = strtok (NULL,split);
-      weight[i] = atol(word);
+      weight[i] = atof(word);
       //printf("%ld ",weight[i] );
     }
     //printf("\n" );
@@ -122,7 +122,7 @@ private:
   uphiLong* offset;
   uphiLong* edges;
   //#ifdef WEIGHTED
-  uphiLong* weight;
+  double* weight;
   //#endif
   phiLong vertexNum;
   phiLong edgeNum;
