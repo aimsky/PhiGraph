@@ -48,7 +48,7 @@ public:
   long numRows() { return n; }
   long numNonzeros() { return m; }
   bool isEmpty() { return m==0; }
-
+  bool isFull() { return m==n; }
   ~VertexSubset(){
     del();
   }

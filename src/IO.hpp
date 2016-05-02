@@ -49,13 +49,16 @@ public:
     if(word == (string)"AdjacencyGraph"){
       word = strtok (NULL,split);
       vertexNum = atol(word);
-      printf("vertexNum=%ld\n",vertexNum );
+      //printf("vertexNum=%ld\n",vertexNum );
       word = strtok (NULL,split);
       edgeNum = atol(word);
-      printf("edgeNum=%ld\n",edgeNum );
+      //printf("edgeNum=%ld\n",edgeNum );
 
       offset = phimalloc(uphiLong,vertexNum);
       edges = phimalloc(uphiLong,edgeNum);
+      #ifdef WEIGHTED
+      weight = phimalloc(uphiLong,edgeNum);
+      #endif
     }
     //set string to long
     for(long i = 0; i < vertexNum; i++){
@@ -68,6 +71,15 @@ public:
       edges[i] = atol(word);
       //printf("%ld\n",edges[i] );
     }
+    #ifdef WEIGHTED
+    for(long i = 0; i < edgeNum; i++){
+      word = strtok (NULL,split);
+      weight[i] = atol(word);
+      //printf("%ld ",weight[i] );
+    }
+    //printf("\n" );
+    #endif
+
     //set vertex
     Vertex* v = phimalloc(Vertex,vertexNum);
 
@@ -76,6 +88,9 @@ public:
       phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
       v[i].setOutDegree(l);
       v[i].setOutVertexes(edges+start);
+      #ifdef WEIGHTED
+      v[i].setOutWeight(weight+start);
+      #endif
 
     }
     return Graph<Vertex>(v,vertexNum,edgeNum);
@@ -106,6 +121,9 @@ private:
   const char * split = "\n\t\r ";
   uphiLong* offset;
   uphiLong* edges;
+  //#ifdef WEIGHTED
+  uphiLong* weight;
+  //#endif
   phiLong vertexNum;
   phiLong edgeNum;
 };

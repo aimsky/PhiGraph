@@ -4,6 +4,7 @@
 #include "IO.hpp"
 #include "command.hpp"
 #include "vertexSubset.hpp"
+#include "gettime.h"
 #include <stdio.h>
 using namespace phigraph;
 
@@ -15,13 +16,37 @@ class PhiGraphProgram{
 public:
   PhiGraphProgram(){};
   virtual bool condition(){};
-  virtual bool update(){};
+  virtual phiLong update(){};
   virtual void gather(){};
   virtual void setter(){};
 
 };
 template<class Program>
 VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
+  //printf("vertexUpdate\n");
+  //phiLong* nextIndices = phi
+  VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
+  uphiLong temp ;
+  parallel_for(uphiLong i = 0;i < frontier->m;i++){
+    uphiLong curVertex = frontier->vertex[i];
+    //uphiLong degree = phigraph.v[curVertex].getOutDegree();
+
+      //#pragma omp critical
+      temp = app.update(phigraph,curVertex);
+      #pragma omp critical
+      if(temp != UINT_T_MAX){
+        nextFrontier->add(temp);
+      }
+
+
+  }
+
+  return nextFrontier;
+
+};
+
+template<class Program>
+VertexSubset* edgeUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
   //printf("vertexUpdate\n");
   //phiLong* nextIndices = phi
   VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
@@ -35,14 +60,12 @@ VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Progra
         //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
         nextFrontier->add(phigraph.v[curVertex].getOutVertexes(j));
       }
-
       //printf("%ld ",phigraph.v[curVertex].getOutVertexes(j));
     }
   }
-
   return nextFrontier;
-
 };
+
 
 int parallel_main(int argc, char *argv[]) {
   command cmd(argc, argv, " [-s] <inFile>");
@@ -51,7 +74,9 @@ int parallel_main(int argc, char *argv[]) {
   Graph<Vertex> graph = io->loadGraphFromFile(iFile);
   //io->iofree();
   //char *s = (io->readStringFromFile(iFile)).get();
+  startTime();
   compute(graph);
+  nextTime("Running time");
   graph.delgraph();
 
 }
