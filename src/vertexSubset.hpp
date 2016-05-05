@@ -17,16 +17,21 @@ public:
   // make a singleton vertex in range of n
   VertexSubset(phiLong _n, uphiLong v): n(_n), m(1), d(NULL), isDense(0) {
     vertex.push_back(v);
+    omp_init_lock(&mylock);//omp_init_lock(&mylock);
   }
 
   //empty vertex set
-  VertexSubset(long _n) : n(_n), m(0), d(NULL), isDense(0) {}
+  VertexSubset(long _n) : n(_n), m(0), d(NULL), isDense(0) {
+    omp_init_lock(&mylock);//omp_init_lock(&mylock);
+
+  }
   // make VertexSubset from array of vertex indices
   // n is range, and m is size of array
   VertexSubset(long _n, long _m, uphiLong* indices): n(_n), m(_m), d(NULL), isDense(0) {
     parallel_for(long j = 0;j < m;j++){
       vertex.push_back(indices[j]);
     }
+    omp_init_lock(&mylock);//omp_init_lock(&mylock);
   }
   // make VertexSubset from boolean array, where n is range
 
@@ -37,7 +42,10 @@ public:
     m = 0;
   }
   void add(phiLong s){
+    omp_set_lock(&mylock);
     vertex.push_back(s);
+    omp_unset_lock(&mylock);//omp_unset_lock(&mylock);
+    #pragma omp atomic
     m++;
   }
   // delete the contents
@@ -74,6 +82,8 @@ public:
   //     cout << endl;
   //   }
   // }
+private:
+  omp_lock_t mylock;  // omp_lock_t mylock
 
 };
 

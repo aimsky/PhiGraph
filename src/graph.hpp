@@ -10,7 +10,8 @@ public:
   unsigned long flags;
   Graph(vertex* vt,phiLong nt,phiLong mt): v(vt),vertexNum(nt),edgeNum(mt){};
   void delgraph(){
-    free(v);
+    //free(v);
+    delete [] v;
   }
 };
 

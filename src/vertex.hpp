@@ -1,9 +1,22 @@
 #ifndef VERTEX_HPP
 #define VERTEX_HPP
 #include "utils.hpp"
+#include <stdio.h>
+#include <stdlib.h>
 class Vertex{
 public:
-  Vertex(uphiLong* invertexes,uphiLong* outvertexes,phiLong indegree,phiLong outdegree);
+  Vertex(){
+    //inVertexes = NULL;
+    //outVertexes = NULL;
+    visited = false;
+  }
+  Vertex(uphiLong* invertexes,uphiLong* outvertexes,phiLong indegree,phiLong outdegree){
+    inVertexes = invertexes;
+    outVertexes = outvertexes;
+    inDegree = indegree;
+    outDegree = outdegree;
+    visited = false;
+  };
   uphiLong* getInVertexes () { return inVertexes; }
   uphiLong* getOutVertexes () { return outVertexes; }
   uphiLong getInVertexes(uphiLong j) { return inVertexes[j]; }
@@ -16,7 +29,9 @@ public:
   void setInDegree(uphiLong _i) { inDegree = _i; }
 
   void setOutWeight(phiDouble* _i){ outWeight = _i;}
+  void setInWeight(phiDouble* _i){ inWeight = _i;}
   phiDouble getOutWeight(uphiLong j){ return outWeight[j];}
+  phiDouble getInWeight(uphiLong j){ return inWeight[j];}
 
   void setVisited(){
     visited = true;
@@ -24,14 +39,25 @@ public:
   bool isVisited(){
     return visited;
   }
+  ~Vertex(){
+    // if(NULL != inVertexes)
+    //   free(inVertexes);
+    // if(NULL != outVertexes)
+    //   free(outVertexes);
+    #ifdef WEIGHTED
+    //free(outWeight);
+    #endif
+    //printf("delete\n");
+  }
 
 private:
   uphiLong* inVertexes;
   uphiLong* outVertexes;
   phiDouble* outWeight;
+  phiDouble* inWeight;
   phiLong inDegree;
   phiLong outDegree;
-  bool visited = false;
+  bool visited;
 };
 
 #endif

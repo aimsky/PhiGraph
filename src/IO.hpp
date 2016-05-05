@@ -37,15 +37,63 @@ public:
 
 class PhiIO {
 public:
-  PhiIO() {}
+  PhiIO() {
+    offset = NULL;
+    inEdges = NULL;
+    outEdges = NULL;
+  }
 
-  Graph<Vertex> loadGraphFromFile(char* fileName){
-    seq<char> temp = readStringFromFile(fileName);
-    char * _string = temp.get();
+  Graph<Vertex> loadGraphFromFile(char* csrfileName,char* cscfileName = NULL){
+    seq<char> csr_temp = readStringFromFile(csrfileName);
+
+    char * _string = csr_temp.get();
     //printf("%s\n",_string );
     //temp.del();//set free memory
     //split string by \n
+
+    stringToArray(_string,true);
+    //set vertex
+    Vertex *v = new Vertex[vertexNum];
+    parallel_for (phiLong i=0; i < vertexNum; i++) {
+      phiLong start = offset[i];
+      phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
+      v[i].setOutDegree(l);
+      v[i].setOutVertexes(outEdges+start);
+      #ifdef WEIGHTED
+      v[i].setOutWeight(outWeight+start);
+      #endif
+    }
+    if(cscfileName != NULL){
+      printf("cssfilename=%s\n",cscfileName );
+      //temp.del();
+      seq<char> csc_temp = readStringFromFile(cscfileName);
+
+      stringToArray(csc_temp.get(),false);
+      parallel_for (phiLong i=0; i < vertexNum; i++) {
+        phiLong start = offset[i];
+        phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
+        v[i].setInDegree(l);
+        v[i].setInVertexes(inEdges+start);
+        #ifdef WEIGHTED
+        v[i].setInWeight(inWeight+start);
+        #endif
+      }
+    }
+
+
+
+    return Graph<Vertex>(v,vertexNum,edgeNum);
+
+  }
+
+
+
+  void stringToArray(char * _string,bool val){
     char * word = strtok (_string,split);
+    uphiLong* _edges = NULL;
+    phiDouble* _weight = NULL;
+
+    //get graph vertex num and edges num
     if(word == (string)"AdjacencyGraph"){
       word = strtok (NULL,split);
       vertexNum = atol(word);
@@ -53,12 +101,26 @@ public:
       word = strtok (NULL,split);
       edgeNum = atol(word);
       //printf("edgeNum=%ld\n",edgeNum );
+      if(offset == NULL)
+        offset = phimalloc(uphiLong,vertexNum);
+      if(val){
+        //offset = phimalloc(uphiLong,vertexNum);
+        outEdges = phimalloc(uphiLong,edgeNum);
+        #ifdef WEIGHTED
+        outWeight = phimalloc(double,edgeNum);
+        _weight = outWeight;
+        #endif
+        _edges = outEdges;
 
-      offset = phimalloc(uphiLong,vertexNum);
-      edges = phimalloc(uphiLong,edgeNum);
-      #ifdef WEIGHTED
-      weight = phimalloc(double,edgeNum);
-      #endif
+      }else{
+        inEdges = phimalloc(uphiLong,edgeNum);
+        #ifdef WEIGHTED
+        inWeight = phimalloc(double,edgeNum);
+        _weight = inWeight;
+        #endif
+        _edges = inEdges;
+      }
+
     }
     //set string to long
     for(long i = 0; i < vertexNum; i++){
@@ -68,33 +130,17 @@ public:
     }
     for(long i = 0; i < edgeNum; i++){
       word = strtok (NULL,split);
-      edges[i] = atol(word);
+      _edges[i] = atol(word);
       //printf("%ld\n",edges[i] );
     }
     #ifdef WEIGHTED
     for(long i = 0; i < edgeNum; i++){
       word = strtok (NULL,split);
-      weight[i] = atof(word);
+      _weight[i] = atof(word);
       //printf("%ld ",weight[i] );
     }
     //printf("\n" );
     #endif
-
-    //set vertex
-    Vertex* v = phimalloc(Vertex,vertexNum);
-
-    parallel_for (phiLong i=0; i < vertexNum; i++) {
-      phiLong start = offset[i];
-      phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
-      v[i].setOutDegree(l);
-      v[i].setOutVertexes(edges+start);
-      #ifdef WEIGHTED
-      v[i].setOutWeight(weight+start);
-      #endif
-
-    }
-    return Graph<Vertex>(v,vertexNum,edgeNum);
-
   }
 
   seq<char> readStringFromFile(char *fileName) {
@@ -113,16 +159,26 @@ public:
   }
   void iofree(){
     free(offset);
-    free(edges);
+    free(outEdges);
   }
 private:
   // char * _string;
   // char * word;
   const char * split = "\n\t\r ";
   uphiLong* offset;
-  uphiLong* edges;
+  uphiLong* inEdges;
   //#ifdef WEIGHTED
-  double* weight;
+  double* inWeight;
+
+  uphiLong* outEdges;
+  //#ifdef WEIGHTED
+  double* outWeight;
+
+  // uphiLong* outOffset;
+  // uphiLong* edges;
+  // //#ifdef WEIGHTED
+  // double* weight;
+
   //#endif
   phiLong vertexNum;
   phiLong edgeNum;
