@@ -3,12 +3,12 @@
 class BFS:public PhiGraphProgram{
 
 public:
-  uphiLong* parents;
+  //uphiLong* parents;
 
   BFS(Graph<Vertex>& phigraph,uphiLong start){
-    ///parents = phimalloc(uphiLong,phigraph.vertexNum);
-    //parallel_for(long i=0;i < phigraph.vertexNum;i++) parents[i] = UINT_T_MAX;
-    //parents[start] = start;
+    // parents = phimalloc(uphiLong,phigraph.vertexNum);
+    // parallel_for(long i=0;i < phigraph.vertexNum;i++) parents[i] = UINT_T_MAX;
+    // parents[start] = start;
     phigraph.v[start].setVisited();
 
   }
@@ -18,7 +18,7 @@ public:
     //printf("vertex[%ld]:degree=%ld\n",curVertex,degree);
     parallel_for(uphiLong j = 0;j < degree;j++){
       phiLong temp = phigraph.v[curVertex].getOutVertexes(j);
-      //#pragma omp critical
+
       if(!phigraph.v[temp].isVisited()){
         //printf("%ld\n", phigraph.v[curVertex].getOutVertexes(j));
 

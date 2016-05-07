@@ -41,6 +41,7 @@ public:
     offset = NULL;
     inEdges = NULL;
     outEdges = NULL;
+    split = "\n\t\r ";
   }
 
   Graph<Vertex> loadGraphFromFile(char* csrfileName,char* cscfileName = NULL){
@@ -164,7 +165,7 @@ public:
 private:
   // char * _string;
   // char * word;
-  const char * split = "\n\t\r ";
+  const char * split;
   uphiLong* offset;
   uphiLong* inEdges;
   //#ifdef WEIGHTED

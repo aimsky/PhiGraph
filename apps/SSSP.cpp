@@ -47,7 +47,7 @@ public:
       }
     }
 
-    printf("nextId:%ld\n", nextVertexId);
+    //printf("nextId:%ld\n", nextVertexId);
     nextFrontier->add(nextVertexId);
   }
 };

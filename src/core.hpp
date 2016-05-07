@@ -31,45 +31,27 @@ VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Progra
   parallel_for(uphiLong i = 0;i < frontier->m;i++){
     uphiLong curVertex = frontier->vertex[i];
     app.update(phigraph,nextFrontier,curVertex);
-    // temp = app.update(phigraph,curVertex);
-    // #pragma omp critical
-    // if(temp != UINT_T_MAX){
-    //   nextFrontier->add(temp);
-    // }
+
   }
   return nextFrontier;
 };
 
-// template<class Program>
-// void vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,Program& app){
-//
-//   //VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
-//   //uphiLong temp ;
-//   parallel_for(uphiLong i = 0;i < frontier->m;i++){
-//     uphiLong curVertex = frontier->vertex[i];
-//     app.update(phigraph,frontier,curVertex);
-//     // temp = app.update(phigraph,curVertex);
-//     // #pragma omp critical
-//     // if(temp != UINT_T_MAX){
-//     //   nextFrontier->add(temp);
-//     // }
-//   }
-//   //return nextFrontier;
-// };
+template<class Program>
+void vertexUpdateSerial(Graph<Vertex>& phigraph,Program& app){
+
+  for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+    //uphiLong curVertex = phigraph.v[i];
+    app.update(phigraph,i);
+
+  }
+
+};
 
 template<class Program>
 void vertexUpdate(Graph<Vertex>& phigraph,Program& app){
 
-  //VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
-  //uphiLong temp ;
   parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
-    uphiLong curVertex = phigraph.v[i];
-    app.update(phigraph,curVertex);
-    // temp = app.update(phigraph,curVertex);
-    // #pragma omp critical
-    // if(temp != UINT_T_MAX){
-    //   nextFrontier->add(temp);
-    // }
+    app.update(phigraph,i);
   }
 
 };
@@ -82,7 +64,8 @@ int parallel_main(int argc, char *argv[]) {
   PhiIO* io = new PhiIO();
   #ifdef CSC
   char *iFile2 = cmd.getArgument(1);
-  Graph<Vertex> graph = io->loadGraphFromFile(iFile,iFile2);
+  printf("%s\n",iFile2 );
+  Graph<Vertex> graph = io->loadGraphFromFile(iFile2,iFile);
   #else
   Graph<Vertex> graph = io->loadGraphFromFile(iFile);
   #endif
