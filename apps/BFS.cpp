@@ -39,11 +39,11 @@ void compute(Graph<Vertex>& phigraph) {
   BFS bfs(phigraph,start);
   while(!frontier->isEmpty()){ //loop until frontier is empty
     VertexSubset* output = vertexUpdate(phigraph, frontier, bfs);
-    // printf("vertexSubset:" );
-    // for(long i = 0;i < frontier->m;i++){
-    //   printf("%ld ", frontier->vertex[i]);
-    // }
-    // printf("\n");
+    printf("vertexSubset:" );
+    for(long i = 0;i < frontier->m;i++){
+      printf("%ld ", frontier->vertex[i]);
+    }
+    printf("\n");
     delete frontier;
     //printf("frontierdel\n");
     frontier = output; //set new frontier

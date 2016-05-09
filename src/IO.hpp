@@ -43,14 +43,36 @@ public:
     outEdges = NULL;
     split = "\n\t\r ";
   }
+  PhiIO(phiLong vn,phiLong en,uphiLong* o,uphiLong* out,phiDouble* outw = NULL){
+    vertexNum = vn;
+    edgeNum = en;
+    offset = o;
+    outEdges = out;
+    outWeight = outw;
+  }
+  void writeGraphToFile(char* filename){
+    ofstream file(filename, ios::out | ios::binary | ios::ate);
+    if (!file.is_open()) {
+      cout << "Unable to open file: " << filename << endl;
+      abort();
+    }
+    file << "AdjacencyGraph"<<endl;
+    file << vertexNum <<endl;
+    file << edgeNum <<endl;
+    for(phiLong i = 0;i < vertexNum;++i){
+      file << offset[i] << endl;
+    }
+    for(phiLong j = 0;j < edgeNum;++j){
+      file << outEdges[j] << endl;
+    }
+    file.close();
+
+  }
 
   Graph<Vertex> loadGraphFromFile(char* csrfileName,char* cscfileName = NULL){
     seq<char> csr_temp = readStringFromFile(csrfileName);
 
     char * _string = csr_temp.get();
-    //printf("%s\n",_string );
-    //temp.del();//set free memory
-    //split string by \n
 
     stringToArray(_string,true);
     //set vertex
@@ -80,11 +102,7 @@ public:
         #endif
       }
     }
-
-
-
     return Graph<Vertex>(v,vertexNum,edgeNum);
-
   }
 
 
