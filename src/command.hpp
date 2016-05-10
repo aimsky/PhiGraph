@@ -30,9 +30,10 @@ struct command {
   // get an argument
   // i is indexed from the last argument = 0, second to last indexed 1, ..
   char *getArgument(int i) {
-    if (argc < 2 + i)
-      badArgument();
-    return argv[argc - 1 - i];
+    // if (argc < 1 + i)
+    //   badArgument();
+    //return argv[argc - 1 - i];
+    return argv[i];
   }
 
   // looks for two filenames

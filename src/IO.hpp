@@ -65,6 +65,11 @@ public:
     for(phiLong j = 0;j < edgeNum;++j){
       file << outEdges[j] << endl;
     }
+    if(outWeight != NULL){
+      for(phiLong j = 0;j < edgeNum;++j){
+        file << outWeight[j] << endl;
+      }
+    }
     file.close();
 
   }

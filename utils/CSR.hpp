@@ -37,8 +37,8 @@ public:
   phiDouble* getRandomWeight(){
     srand((int)time(NULL));
     weight = phimalloc(phiDouble,getEdgesNum());
-    parallel_for(phiLong i = 0;i < vertexNum;++i){
-      weight[i] = random<phiDouble>(0,50);
+    parallel_for(phiLong i = 0;i < getEdgesNum();++i){
+      weight[i] = random<phiDouble>(1,50);
     }
     return weight;
   }

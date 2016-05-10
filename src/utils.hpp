@@ -34,7 +34,7 @@ T random(int m, int n)
         }
 }
 template <class T>
-T random(phiLong m,phiLong n,int limit){
+T random(int m,int n,int limit){
   //if(limit == random(m,n))
   T temp;
   do{

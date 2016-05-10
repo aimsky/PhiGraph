@@ -59,11 +59,11 @@ void vertexUpdate(Graph<Vertex>& phigraph,Program& app){
 
 int parallel_main(int argc, char *argv[]) {
   command cmd(argc, argv, " [-s] <inFile>");
-  char *iFile = cmd.getArgument(0);
-
+  char *iFile = cmd.getArgument(1);
+  printf("%s\n",iFile );
   PhiIO* io = new PhiIO();
   #ifdef CSC
-  char *iFile2 = cmd.getArgument(1);
+  char *iFile2 = cmd.getArgument(2);
   printf("%s\n",iFile2 );
   Graph<Vertex> graph = io->loadGraphFromFile(iFile2,iFile);
   #else

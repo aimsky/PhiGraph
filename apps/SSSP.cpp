@@ -47,7 +47,7 @@ public:
       }
     }
 
-    //printf("nextId:%ld\n", nextVertexId);
+    printf("nextId:%ld\n", nextVertexId);
     nextFrontier->add(nextVertexId);
   }
 };
@@ -57,6 +57,7 @@ void compute(Graph<Vertex>& phigraph) {
   phiLong n = phigraph.vertexNum;
   VertexSubset* frontier = new VertexSubset(phigraph.vertexNum,start); //creates initial frontier
   SSSP sssp(n,start,phigraph);
+  
   while(!frontier->isEmpty()){ //loop until frontier is empty
     VertexSubset* output = vertexUpdate(phigraph, frontier, sssp);
     //printf("output=%ld\n",output->vertex[0] );
@@ -65,11 +66,6 @@ void compute(Graph<Vertex>& phigraph) {
     frontier = output; //set new frontier
 
   }
-  // for(long i = 0;i < n;i++){
-  //   VertexSubset* output = vertexUpdate(phigraph, frontier, sssp);
-  //   delete frontier;
-  //   frontier = output; //set new frontier
-  // }
   delete frontier;
 
 }
