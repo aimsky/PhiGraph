@@ -92,12 +92,11 @@ public:
       #endif
     }
     if(cscfileName != NULL){
-      printf("cssfilename=%s\n",cscfileName );
-      //temp.del();
+      
       seq<char> csc_temp = readStringFromFile(cscfileName);
 
       stringToArray(csc_temp.get(),false);
-      parallel_for (phiLong i=0; i < vertexNum; i++) {
+      for (phiLong i=0; i < vertexNum; i++) {
         phiLong start = offset[i];
         phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
         v[i].setInDegree(l);

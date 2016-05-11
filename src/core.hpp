@@ -65,7 +65,7 @@ int parallel_main(int argc, char *argv[]) {
   #ifdef CSC
   char *iFile2 = cmd.getArgument(2);
   printf("%s\n",iFile2 );
-  Graph<Vertex> graph = io->loadGraphFromFile(iFile2,iFile);
+  Graph<Vertex> graph = io->loadGraphFromFile(iFile,iFile2);
   #else
   Graph<Vertex> graph = io->loadGraphFromFile(iFile);
   #endif

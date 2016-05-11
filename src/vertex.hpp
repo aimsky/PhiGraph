@@ -26,7 +26,7 @@ public:
   void setInVertexes(uphiLong* _i) { inVertexes = _i; }
   void setOutVertexes(uphiLong* _i) { outVertexes = _i; }
   void setOutDegree(uphiLong _i) { outDegree = _i; }
-  void setInDegree(uphiLong _i) { inDegree = _i; }
+  void setInDegree(phiLong _i) { inDegree = _i; }
 
   void setOutWeight(phiDouble* _i){ outWeight = _i;}
   void setInWeight(phiDouble* _i){ inWeight = _i;}
