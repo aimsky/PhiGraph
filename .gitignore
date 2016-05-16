@@ -32,6 +32,9 @@ build/CMakeFiles
 build/cmake_install.cmake
 build/CMakeCache.txt
 build/Makefile
+build/install_manifest.txt
+build/examples/
+build/src/
 utils/build/bin/*
 utils/build/CMakeFiles
 utils/build/cmake_install.cmake

@@ -43,6 +43,4 @@ T random(int m,int n,int limit){
   return temp;
 }
 
-
-
 #endif
