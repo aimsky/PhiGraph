@@ -3,11 +3,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
-#define phimalloc(_n, _m) (_n *)malloc((_m) * sizeof(_n))
+#include <malloc.h>
+#include <mm_malloc.h>
 
-typedef long phiLong;
-typedef unsigned long uphiLong;
-typedef double phiDouble;
+//dynamic memorry aligned
+#define phimalloc(_n, _m) (_n *)_mm_malloc(_m*sizeof(_n),64)
+
+
+typedef __attribute__((align(64))) long phiLong;
+typedef __attribute__((align(64))) unsigned long uphiLong;
+typedef __attribute__((align(64))) double phiDouble;
 #define INT_T_MAX LONG_MAX
 #define UINT_T_MAX ULONG_MAX
 

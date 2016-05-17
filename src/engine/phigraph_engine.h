@@ -16,7 +16,8 @@ public:
 
   void vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app);
 
-  void exec(PhiGraphProgram& program,VertexSubset* vertexsubset = NULL);
+  void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset = NULL);
+  void exec_gas(PhiGraphProgram& program);
 private:
   phiLong iteration;
   Graph<Vertex>* phigraph;

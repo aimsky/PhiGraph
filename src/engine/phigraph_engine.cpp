@@ -42,7 +42,7 @@ void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app){
 };
 
 
-void PhiGraphEngine::exec(PhiGraphProgram& program,VertexSubset* vertexsubset){
+void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset){
   if(vertexsubset != NULL){
     //loop until frontier is empty
     while(!vertexsubset->isEmpty()){

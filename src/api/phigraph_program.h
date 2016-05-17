@@ -7,10 +7,11 @@
 class PhiGraphProgram{
 public:
   PhiGraphProgram(){};
-  virtual bool condition(){};
+
   virtual void update(Graph<Vertex>& phigraph,VertexSubset* nextFrontier,uphiLong curVertex){};
   virtual void update(Graph<Vertex>& phigraph,uphiLong curVertex){};
   virtual void gather(){};
+  virtual void apply(){};
   virtual void setter(){};
   /**
    * Called before an iteration starts.

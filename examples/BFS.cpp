@@ -42,6 +42,6 @@ int parallel_main(int argc, char *argv[]) {
   BFS bfs(graph_init.getGraph(),0);
   phiLong n = graph_init.getGraph().vertexNum;
   VertexSubset* frontier = new VertexSubset(n,0);
-  graph_engine.exec(bfs,frontier);
+  graph_engine.exec_vertex(bfs,frontier);
 
 }
