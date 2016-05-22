@@ -4,7 +4,9 @@
 #include "../structure/graph.h"
 #include "../structure/vertex.h"
 #include "../structure/vertexSubset.h"
-
+#include "../utils/gettime.h"
+#include "../structure/phivector.h"
+#include "../api/parallel.h"
 class PhiGraphEngine{
 public:
   PhiGraphEngine(Graph<Vertex>* graph);
@@ -18,10 +20,13 @@ public:
 
   void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset = NULL);
   void exec_gas(PhiGraphProgram& program);
+
 private:
   phiLong iteration;
   Graph<Vertex>* phigraph;
-
+  static Timer* _tm;
+  static int MIN_ITERATION_NUM;
+  int machine_core_num;
 };
 
 #endif

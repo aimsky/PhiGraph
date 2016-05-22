@@ -3,7 +3,8 @@
 PhiGraphInit::PhiGraphInit(int argc, char *argv[]){
   cmd = new command(argc, argv, " [-s] <inFile>");
   csrFile = cmd->getArgument(1);
-  graphIO = new PhiGraphIO();
+  bool weighted = cmd->getOption("-w");
+  graphIO = new PhiGraphIO(weighted);
   graph = graphIO->loadGraphFromFile(csrFile);
   delete cmd;
 }

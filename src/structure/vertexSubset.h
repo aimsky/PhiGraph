@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 #include "../utils/parallel.h"
 #include "../utils/utils.h"
 
@@ -37,7 +38,10 @@ public:
   ~VertexSubset();
 
 private:
-  omp_lock_t mylock;  // omp_lock_t mylock
+  // int lock;
+  // int unlock;
+  // int mutex;
+  omp_lock_t mylock;
 
 
 };

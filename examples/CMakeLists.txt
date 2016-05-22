@@ -1,5 +1,8 @@
 #set compiler
-SET(CMAKE_C_COMPILER "g++")
+SET(CMAKE_CXX_COMPILER "g++")
+#SET(CMAKE_CXX_COMPILER "icpc")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp -openmp-link=static -mmic -vec -qopt-report=3 -O3")
+
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/src)
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 
@@ -13,4 +16,6 @@ endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
 ADD_EXECUTABLE(bfs BFS.cpp)
+ADD_EXECUTABLE(sssp SSSP.cpp)
 TARGET_LINK_LIBRARIES(bfs libphigraph.a)
+TARGET_LINK_LIBRARIES(sssp libphigraph.a)

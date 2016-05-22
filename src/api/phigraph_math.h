@@ -6,7 +6,7 @@
 
 class PhiGraphMath{
 public:
-  static long sum(long *buf,long N);
+  //static long sum(long *buf,long N);
 };
 
 

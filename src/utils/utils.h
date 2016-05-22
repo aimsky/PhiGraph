@@ -1,11 +1,12 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef UTILS_H
+#define UTILS_H
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
 #include <malloc.h>
 #include <mm_malloc.h>
-
+#include <iostream>
+#include <omp.h>
 //dynamic memorry aligned
 #define phimalloc(_n, _m) (_n *)_mm_malloc(_m*sizeof(_n),64)
 
@@ -47,5 +48,47 @@ T random(int m,int n,int limit){
   }while(limit == temp);
   return temp;
 }
+
+template <class ET>
+inline bool phiCAS(ET *ptr, ET oldv, ET newv) {
+  if (sizeof(ET) == 1) {
+    return __sync_bool_compare_and_swap((bool*)ptr, *((bool*)&oldv), *((bool*)&newv));
+  } else if (sizeof(ET) == 4) {
+    return __sync_bool_compare_and_swap((int*)ptr, *((int*)&oldv), *((int*)&newv));
+  } else if (sizeof(ET) == 8) {
+    return __sync_bool_compare_and_swap((long*)ptr, *((long*)&oldv), *((long*)&newv));
+  }else {
+    std::cout << "CAS bad length : " << sizeof(ET) << std::endl;
+    abort();
+  }
+}
+
+template <class ET>
+inline bool writeMin(ET *a, ET b) {
+  ET c; bool r=0;
+  do c = *a;
+  while (c > b && !(r=phiCAS(a,c,b)));
+  return r;
+}
+
+template <class ET>
+inline void writeAdd(ET *a, ET b) {
+  volatile ET newV, oldV;
+  do {oldV = *a; newV = oldV + b;}
+  while (!phiCAS(a, oldV, newV));
+}
+
+static int machine_core_num = omp_get_num_procs();
+static int MIN_ITERATION_NUM = 4;
+//dynamic set threads num
+inline int dynamicThreadNum(int n,int min_each = MIN_ITERATION_NUM,int core_num = machine_core_num){
+  int max_tn = n/min_each;
+  int tn = max_tn > 2*core_num? 2*core_num:max_tn;
+  if(tn < 1){
+    tn = 1;
+  }
+  return tn;
+}
+
 
 #endif

@@ -56,7 +56,8 @@ phiDouble Vertex::getInWeight(uphiLong j){
   return inWeight[j];
 }
 void Vertex::setVisited(){
-  visited = true;
+  phiCAS(&visited,false,true);
+  //visited = true;
 }
 bool Vertex::isVisited(){
   return visited;

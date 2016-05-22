@@ -15,7 +15,7 @@ using namespace std;
 
 class PhiGraphIO {
 public:
-  PhiGraphIO();
+  PhiGraphIO(bool w);
   PhiGraphIO(phiLong vn,phiLong en,uphiLong* o,uphiLong* out,phiDouble* outw = NULL);
   void writeGraphToFile(char* filename);
   Graph<Vertex>* loadGraphFromFile(char* csrfileName,char* cscfileName = NULL);
@@ -23,7 +23,7 @@ public:
   seq<char> readStringFromFile(char *fileName);
   void iofree();
 private:
-
+  bool weighted;
   const char * split;
   uphiLong* offset;
   uphiLong* inEdges;

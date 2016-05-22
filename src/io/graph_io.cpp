@@ -2,11 +2,12 @@
 
 
 
-PhiGraphIO::PhiGraphIO() {
+PhiGraphIO::PhiGraphIO(bool w) {
   offset = NULL;
   inEdges = NULL;
   outEdges = NULL;
   split = "\n\t\r ";
+  weighted = w;
 
 }
 PhiGraphIO::PhiGraphIO(phiLong vn,phiLong en,uphiLong* o,uphiLong* out,phiDouble* outw){
@@ -53,9 +54,9 @@ Graph<Vertex>* PhiGraphIO::loadGraphFromFile(char* csrfileName,char* cscfileName
     phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
     v[i].setOutDegree(l);
     v[i].setOutVertexes(outEdges+start);
-    #ifdef WEIGHTED
-    v[i].setOutWeight(outWeight+start);
-    #endif
+    if(weighted)
+      v[i].setOutWeight(outWeight+start);
+
   }
   if(cscfileName != NULL){
 
@@ -67,9 +68,9 @@ Graph<Vertex>* PhiGraphIO::loadGraphFromFile(char* csrfileName,char* cscfileName
       phiLong l = ((i == vertexNum-1) ? edgeNum : offset[i+1])-offset[i];
       v[i].setInDegree(l);
       v[i].setInVertexes(inEdges+start);
-      #ifdef WEIGHTED
-      v[i].setInWeight(inWeight+start);
-      #endif
+      if(weighted)
+        v[i].setInWeight(inWeight+start);
+
     }
   }
   return new Graph<Vertex>(v,vertexNum,edgeNum);
@@ -95,18 +96,20 @@ void PhiGraphIO::stringToArray(char * _string,bool val){
     if(val){
       //offset = phimalloc(uphiLong,vertexNum);
       outEdges = phimalloc(uphiLong,edgeNum);
-      #ifdef WEIGHTED
-      outWeight = phimalloc(double,edgeNum);
-      _weight = outWeight;
-      #endif
+      if(weighted){
+        printf("good\n" );
+        outWeight = phimalloc(double,edgeNum);
+        _weight = outWeight;
+      }
+
       _edges = outEdges;
 
     }else{
       inEdges = phimalloc(uphiLong,edgeNum);
-      #ifdef WEIGHTED
-      inWeight = phimalloc(double,edgeNum);
-      _weight = inWeight;
-      #endif
+      if(weighted){
+        inWeight = phimalloc(double,edgeNum);
+        _weight = inWeight;
+      }
       _edges = inEdges;
     }
 
@@ -122,14 +125,16 @@ void PhiGraphIO::stringToArray(char * _string,bool val){
     _edges[i] = atol(word);
     //printf("%ld\n",edges[i] );
   }
-  #ifdef WEIGHTED
-  for(long i = 0; i < edgeNum; i++){
-    word = strtok (NULL,split);
-    _weight[i] = atof(word);
-    //printf("%ld ",weight[i] );
+  if(weighted){
+    for(long i = 0; i < edgeNum; i++){
+      word = strtok (NULL,split);
+      _weight[i] = atof(word);
+      //printf("%ld ",weight[i] );
+    }
   }
+
   //printf("\n" );
-  #endif
+
 }
 
 seq<char> PhiGraphIO::readStringFromFile(char *fileName) {

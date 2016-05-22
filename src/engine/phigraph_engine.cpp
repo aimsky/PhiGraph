@@ -1,9 +1,12 @@
 
 #include "phigraph_engine.h"
 
+Timer* PhiGraphEngine::_tm = new Timer();
+int PhiGraphEngine::MIN_ITERATION_NUM = 4;
 PhiGraphEngine::PhiGraphEngine(Graph<Vertex>* graph){
   iteration = 0;
   phigraph = graph;
+  machine_core_num = omp_get_num_procs();
 }
 PhiGraphEngine::~PhiGraphEngine(){
 
@@ -13,7 +16,10 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
 
   VertexSubset* nextFrontier = new VertexSubset(phigraph.vertexNum);
     //uphiLong temp ;
-  parallel_for(uphiLong i = 0;i < frontier->m;i++){
+  //omp_set_nested(true);
+  //#pragma omp parallel for num_threads(dynamicThreadNum(frontier->m,MIN_ITERATION_NUM,machine_core_num))
+  for(uphiLong i = 0;i < frontier->m;i++){
+    //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
     uphiLong curVertex = frontier->vertex[i];
     app.update(phigraph,nextFrontier,curVertex);
 
@@ -43,6 +49,8 @@ void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app){
 
 
 void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset){
+
+  PhiGraphEngine::_tm->start();
   if(vertexsubset != NULL){
     //loop until frontier is empty
     while(!vertexsubset->isEmpty()){
@@ -62,7 +70,7 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsu
     //exute vertex update to all vertex
     vertexUpdate(*phigraph,program);
   }
-
+  PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   //do user difine something after compution finish
   program.compution_finish();
 }
