@@ -97,7 +97,7 @@ void PhiGraphIO::stringToArray(char * _string,bool val){
       //offset = phimalloc(uphiLong,vertexNum);
       outEdges = phimalloc(uphiLong,edgeNum);
       if(weighted){
-        printf("good\n" );
+        //printf("good\n" );
         outWeight = phimalloc(double,edgeNum);
         _weight = outWeight;
       }

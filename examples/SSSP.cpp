@@ -48,14 +48,12 @@ class SSSP:public PhiGraphProgram{
           //#pragma omp critical
           phiDouble temp = distance[graph.vertex[nextVertexId].getOutVertexes(i)];
           if(!visit[graph.vertex[nextVertexId].getOutVertexes(i)] &&  (min + graph.vertex[nextVertexId].getOutWeight(i)) < temp){
-            //distance[graph.vertex[nextVertexId].getOutVertexes(i)] = min + graph.vertex[nextVertexId].getOutWeight(i);
-            //__sync_fetch_and_add(distance[graph.vertex[nextVertexId].getOutVertexes(i)], min);
-            //printf("good haha\n" );
+            
             phiCAS(&distance[graph.vertex[nextVertexId].getOutVertexes(i)],temp,graph.vertex[nextVertexId].getOutWeight(i)+min);
           }
         }
 
-        printf("nextId:%ld\n", nextVertexId);
+        //printf("nextId:%ld\n", nextVertexId);
         nextFrontier->add(nextVertexId);
       }else return;
 

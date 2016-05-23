@@ -49,6 +49,7 @@ T random(int m,int n,int limit){
   return temp;
 }
 
+//atomic operation
 template <class ET>
 inline bool phiCAS(ET *ptr, ET oldv, ET newv) {
   if (sizeof(ET) == 1) {
@@ -84,7 +85,7 @@ static int MIN_ITERATION_NUM = 4;
 //dynamic set threads num
 inline int dynamicThreadNum(int n,int min_each = MIN_ITERATION_NUM,int core_num = machine_core_num){
   int max_tn = n/min_each;
-  int tn = max_tn > 2*core_num? 2*core_num:max_tn;
+  int tn = max_tn > core_num? core_num:max_tn;
   if(tn < 1){
     tn = 1;
   }

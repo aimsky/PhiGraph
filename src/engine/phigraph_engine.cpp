@@ -7,9 +7,24 @@ PhiGraphEngine::PhiGraphEngine(Graph<Vertex>* graph){
   iteration = 0;
   phigraph = graph;
   machine_core_num = omp_get_num_procs();
+  threadNum = dynamicThreadNum(graph->vertexNum);
+  //printf("threadNum:t\n", );
+  omp_set_num_threads(threadNum);
+  engine_infor(0);
+  //kmp_set_defaults
+  //kmp_set-defaults("KMP_AFFINITY = scatter");
 }
 PhiGraphEngine::~PhiGraphEngine(){
 
+}
+void PhiGraphEngine::engine_infor(int id){
+  if(id == 0){
+    printf("PhiGraph Engine is running\n");
+    printf("Thread Num:[%d]\n",threadNum);
+  }if(id == 1){
+    cout<<"running time:";
+    PhiGraphEngine::_tm->reportTime(running_time);
+  }
 }
 
 VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,PhiGraphProgram& app){
@@ -19,6 +34,7 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
   //omp_set_nested(true);
   //#pragma omp parallel for num_threads(dynamicThreadNum(frontier->m,MIN_ITERATION_NUM,machine_core_num))
   for(uphiLong i = 0;i < frontier->m;i++){
+
     //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
     uphiLong curVertex = frontier->vertex[i];
     app.update(phigraph,nextFrontier,curVertex);
@@ -63,15 +79,21 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsu
         break;
     }
   }
-  PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
+  running_time = PhiGraphEngine::_tm->next();
+  engine_infor(1);
+  //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   //do user difine something after compution finish
   program.compution_finish();
+
 }
 void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,int iteration){
   PhiGraphEngine::_tm->start();
   for(int i = 0;i < iteration;i++){
     vertexUpdate(*phigraph,program);
   }
-  PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
+  running_time = PhiGraphEngine::_tm->next();
+  engine_infor(1);
+  //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   program.compution_finish();
+
 }

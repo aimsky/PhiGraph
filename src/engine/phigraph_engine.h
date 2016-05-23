@@ -7,6 +7,7 @@
 #include "../utils/gettime.h"
 #include "../structure/phivector.h"
 #include "../api/parallel.h"
+#include <omp.h>
 class PhiGraphEngine{
 public:
   PhiGraphEngine(Graph<Vertex>* graph);
@@ -20,6 +21,7 @@ public:
   void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset);
   void exec_vertex(PhiGraphProgram& program,int iteration = 1);
   void exec_gas(PhiGraphProgram& program);
+  void engine_infor(int id);
 
 private:
   phiLong iteration;
@@ -27,6 +29,8 @@ private:
   static Timer* _tm;
   static int MIN_ITERATION_NUM;
   int machine_core_num;
+  int threadNum;
+  phiDouble running_time;
 };
 
 #endif
