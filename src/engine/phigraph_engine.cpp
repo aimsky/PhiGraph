@@ -7,9 +7,9 @@ PhiGraphEngine::PhiGraphEngine(Graph<Vertex>* graph){
   iteration = 0;
   phigraph = graph;
   machine_core_num = omp_get_num_procs();
-  threadNum = dynamicThreadNum(graph->vertexNum);
+  //threadNum = dynamicThreadNum(graph->vertexNum);
   //printf("threadNum:t\n", );
-  omp_set_num_threads(threadNum);
+  //omp_set_num_threads(threadNum);
   engine_infor(0);
   //kmp_set_defaults
   //kmp_set-defaults("KMP_AFFINITY = scatter");
@@ -20,7 +20,7 @@ PhiGraphEngine::~PhiGraphEngine(){
 void PhiGraphEngine::engine_infor(int id){
   if(id == 0){
     printf("PhiGraph Engine is running\n");
-    printf("Thread Num:[%d]\n",threadNum);
+    //printf("Thread Num:[%d]\n",threadNum);
   }if(id == 1){
     cout<<"running time:";
     PhiGraphEngine::_tm->reportTime(running_time);
@@ -33,13 +33,30 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
     //uphiLong temp ;
   //omp_set_nested(true);
   //#pragma omp parallel for num_threads(dynamicThreadNum(frontier->m,MIN_ITERATION_NUM,machine_core_num))
-  for(uphiLong i = 0;i < frontier->m;i++){
+  threadNum = dynamicThreadNum(frontier->m);
+  if(threadNum == 1){
+    omp_set_num_threads(machine_core_num/2);
+    for(uphiLong i = 0;i < frontier->m;i++){
 
-    //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
-    uphiLong curVertex = frontier->vertex[i];
-    app.update(phigraph,nextFrontier,curVertex);
-    //printf("hahahhhhh\n" );
+      //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
+      uphiLong curVertex = frontier->vertex[i];
+      app.update(phigraph,nextFrontier,curVertex);
+      //printf("hahahhhhh\n" );
+    }
+  }else{
+    printf("frontier:%ld\n",frontier->m );
+    omp_set_num_threads(threadNum);
+    omp_set_nested(true);
+    #pragma omp parallel for schedule(static,4)
+    for(uphiLong i = 0;i < frontier->m;i++){
+
+      //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
+      uphiLong curVertex = frontier->vertex[i];
+      app.update(phigraph,nextFrontier,curVertex);
+      //printf("hahahhhhh\n" );
+    }
   }
+
   return nextFrontier;
 };
 

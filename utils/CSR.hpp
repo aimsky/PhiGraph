@@ -1,7 +1,7 @@
 #ifndef CSR_HPP
 #define CSR_HPP
-#include "../src/utils.hpp"
-#include "../src/parallel.hpp"
+#include "../src/utils/utils.h"
+#include "../src/utils/parallel.h"
 #include <vector>
 using namespace std;
 class CSR{
@@ -16,7 +16,7 @@ public:
     srand((int)time(NULL));
     offset[0] = 0;
     parallel_for(phiLong i = 0;i < vertexNum;i++){
-      outDegree[i] = random<uphiLong>(0,10);
+      outDegree[i] = random<uphiLong>(0,1000);
       offset[i+1] = outDegree[i] + offset[i];
     }
     return offset;

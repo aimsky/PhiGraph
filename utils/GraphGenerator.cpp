@@ -1,7 +1,8 @@
 #include "CSR.hpp"
-#include "../src/command.hpp"
-#include "../src/IO.hpp"
-using namespace phigraph;
+#include "../src/utils/command.h"
+#include "../src/io/graph_io.h"
+#include <omp.h>
+
 int parallel_main(int argc, char* argv[]) {
 
   command cmd(argc,argv,"[-s] [-w] [-m <numedges>] [-r <intseed>] [-a <a>] [-b <b>] [-c <c>] n <outFile>");
@@ -15,13 +16,13 @@ int parallel_main(int argc, char* argv[]) {
   CSR* csr = new CSR(n);
   uphiLong* s = csr->getRandomOffset();
   uphiLong* c = csr->getRandomOutVertex();
-  PhiIO* io;
+  PhiGraphIO* io;
   phiDouble* w = csr->getRandomWeight();
   if(hasWeight){
 
-    io = new PhiIO(n,csr->getEdgesNum(),s,c,w);
+    io = new PhiGraphIO(n,csr->getEdgesNum(),s,c,w);
   }else{
-    io = new PhiIO(n,csr->getEdgesNum(),s,c);
+    io = new PhiGraphIO(n,csr->getEdgesNum(),s,c);
   }
   // for(uphiLong i = 0;i < csr->getEdgesNum();i++)
   //   printf("%f\n",w[i] );
