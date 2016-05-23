@@ -22,27 +22,21 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
     //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
     uphiLong curVertex = frontier->vertex[i];
     app.update(phigraph,nextFrontier,curVertex);
-
+    //printf("hahahhhhh\n" );
   }
   return nextFrontier;
 };
 
 
-void PhiGraphEngine::vertexUpdateSerial(Graph<Vertex>& phigraph,PhiGraphProgram& app){
-
-  for(uphiLong i = 0;i < phigraph.vertexNum;i++){
-    //uphiLong curVertex = phigraph.v[i];
-    app.update(phigraph,i);
-
-  }
-
-};
-
 
 void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app){
 
-  parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+  for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+    if(!app.before_iteration(i))
+      break;
     app.update(phigraph,i);
+    if(!app.after_iteration(i))
+      break;
   }
 
 };
@@ -56,7 +50,8 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsu
     while(!vertexsubset->isEmpty()){
       iteration++;
       //do user difine something before itereation
-      program.before_iteration(iteration);
+      if(!program.before_iteration(iteration,vertexsubset))
+        break;
       //exute vertex update to vertexSubset
       VertexSubset* output = vertexUpdate(*phigraph, vertexsubset, program);
       //do user difine something after itereation
@@ -64,13 +59,19 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsu
       delete vertexsubset;
       //set new frontier
       vertexsubset = output;
-      program.after_iteration(iteration,vertexsubset);
+      if(!program.after_iteration(iteration,vertexsubset))
+        break;
     }
-  }else{
-    //exute vertex update to all vertex
-    vertexUpdate(*phigraph,program);
   }
   PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   //do user difine something after compution finish
+  program.compution_finish();
+}
+void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,int iteration){
+  PhiGraphEngine::_tm->start();
+  for(int i = 0;i < iteration;i++){
+    vertexUpdate(*phigraph,program);
+  }
+  PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   program.compution_finish();
 }

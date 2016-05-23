@@ -78,6 +78,7 @@ inline void writeAdd(ET *a, ET b) {
   while (!phiCAS(a, oldV, newV));
 }
 
+
 static int machine_core_num = omp_get_num_procs();
 static int MIN_ITERATION_NUM = 4;
 //dynamic set threads num

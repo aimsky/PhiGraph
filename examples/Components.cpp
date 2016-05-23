@@ -27,22 +27,39 @@ public:
     }
   }
 
-  bool after_iteration(int iteration,VertexSubset* vertexsubset) {
-    printf("itereation[%d]:\n",iteration );
-    for(long i = 0;i < vertexsubset->m;i++){
-      printf("%ld ", vertexsubset->vertex[i]);
+};
+class Components:public PhiGraphProgram{
+public:
+  phiLong componentsNum;
+  PhiGraphEngine* bfs_engine;
+  phiLong vertexNum;
+  Components(Graph<Vertex>& phigraph){
+    componentsNum = 0;
+    bfs_engine = new PhiGraphEngine(&phigraph);
+    vertexNum = phigraph.vertexNum;
+  };
+
+  void update(Graph<Vertex>& phigraph,uphiLong curVertex){
+    if(!phigraph.vertex[curVertex].isVisited()){
+      BFS bfs(phigraph,curVertex);
+      VertexSubset* frontier = new VertexSubset(vertexNum,curVertex);
+      bfs_engine->exec_vertex(bfs,frontier);
+      //comp(phigraph,curVertex);
+      //#pragma omp atomic
+      componentsNum++;
     }
-    printf("\n");
-    return true;
+  }
+  void compution_finish() {
+    printf("components:%ld\n",componentsNum );
   }
 
 };
 int parallel_main(int argc, char *argv[]) {
   PhiGraphInit graph_init(argc,argv);
   PhiGraphEngine graph_engine(&graph_init.getGraph());
-  BFS bfs(graph_init.getGraph(),0);
+  Components components(graph_init.getGraph());
   phiLong n = graph_init.getGraph().vertexNum;
-  VertexSubset* frontier = new VertexSubset(n,0);
-  graph_engine.exec_vertex(bfs,frontier);
+  //VertexSubset* frontier = new VertexSubset(n,0);
+  graph_engine.exec_vertex(components);
 
 }

@@ -4,6 +4,7 @@
 class BellmanFord:public PhiGraphProgram{
 public:
   phiDouble* distance; //save the shortest distance
+  phiLong iteration;
   BellmanFord(Graph<Vertex> & graph,uphiLong start){
     phiLong vertexNum = graph.vertexNum;
 
@@ -12,6 +13,7 @@ public:
       distance[i] = UINT_T_MAX;
     }
     distance[start] = 0.0;
+    iteration = 0;
   }
   phiLong update(Graph<Vertex>& graph,VertexSubset* nextFrontier,uphiLong curVertex){
     uphiLong num = graph.v[curVertex].getOutDegree();
@@ -28,6 +30,7 @@ public:
     }
 
   }
+
 
 };
 

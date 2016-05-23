@@ -14,11 +14,11 @@ public:
 
   VertexSubset* vertexUpdate(Graph<Vertex>& phigraph,VertexSubset* frontier,PhiGraphProgram& app);
 
-  void vertexUpdateSerial(Graph<Vertex>& phigraph,PhiGraphProgram& app);
 
   void vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app);
 
-  void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset = NULL);
+  void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset);
+  void exec_vertex(PhiGraphProgram& program,int iteration = 1);
   void exec_gas(PhiGraphProgram& program);
 
 private:

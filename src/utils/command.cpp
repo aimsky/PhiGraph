@@ -14,7 +14,8 @@ void command::badArgument() {
 // i is indexed from the last argument = 0, second to last indexed 1, ..
 char *command::getArgument(int i) {
   if (argc < 1 + i)
-    badArgument();
+    return NULL;
+    //badArgument();
   //return argv[argc - 1 - i];
   return argv[i];
 }

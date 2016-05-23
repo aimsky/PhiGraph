@@ -16,13 +16,21 @@ public:
   /**
    * Called before an iteration starts.
    */
-  virtual void before_iteration(int iteration) {
+  virtual bool before_iteration(int iteration,VertexSubset* vertexsubset) {
+    return true;
+  }
+  virtual bool before_iteration(int iteration) {
+    return true;
   }
 
   /**
    * Called after an iteration has finished.
    */
-  virtual void after_iteration(int iteration,VertexSubset* vertexsubset) {
+  virtual bool after_iteration(int iteration,VertexSubset* vertexsubset) {
+    return true;
+  }
+  virtual bool after_iteration(int iteration) {
+    return true;
   }
 
   /**
