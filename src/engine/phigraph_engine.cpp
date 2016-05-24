@@ -44,7 +44,7 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
       //printf("hahahhhhh\n" );
     }
   }else{
-    printf("frontier:%ld\n",frontier->m );
+    //printf("frontier:%ld\n",frontier->m );
     omp_set_num_threads(threadNum);
     omp_set_nested(true);
     #pragma omp parallel for schedule(static,4)
@@ -63,13 +63,14 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
 
 
 void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app){
-
-  for(uphiLong i = 0;i < phigraph.vertexNum;i++){
-    if(!app.before_iteration(i))
-      break;
+  threadNum = dynamicThreadNum(phigraph.vertexNum);
+  omp_set_num_threads(threadNum);
+  parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+    //if(!app.before_iteration(i))
+      //break;
     app.update(phigraph,i);
-    if(!app.after_iteration(i))
-      break;
+    //if(!app.after_iteration(i))
+    //  break;
   }
 
 };
@@ -109,8 +110,9 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,int iteration){
     vertexUpdate(*phigraph,program);
   }
   running_time = PhiGraphEngine::_tm->next();
-  engine_infor(1);
+
   //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   program.compution_finish();
+  engine_infor(1);
 
 }

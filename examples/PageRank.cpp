@@ -17,17 +17,21 @@ public:
   void update(Graph<Vertex>& phigraph,uphiLong curVertex){
     phiLong inDegree = phigraph.vertex[curVertex].getInDegree();
     phiDouble sum = 0.0;
-    parallel_for(phiLong i = 0;i < inDegree;i++){
+    simd_for(phiLong i = 0;i < inDegree;i++){
       phiLong in = phigraph.vertex[curVertex].getInVertexes(i);
       phiDouble value = (prValue[in]/phigraph.vertex[in].getOutDegree());
       writeAdd(&sum,value);
       //#pragma omp atomic
       //sum +=
     }
-    prValue[curVertex] = 1-factor+ factor*sum;
+    phiCAS(&prValue[curVertex],prValue[curVertex],1-factor+ factor*sum);
+    //prValue[curVertex] = 1-factor+ factor*sum;
   }
   void compution_finish() {
-
+    for(int i = 0;i < num;++i){
+      printf("%f ",prValue[i] );
+    }
+    printf("\n" );
   }
 
 private:
@@ -44,9 +48,7 @@ int parallel_main(int argc, char *argv[]) {
   //for(int i = 0;i < 40;i++){
   graph_engine.exec_vertex(pagerank,40);
   //}
-  for(int i = 0;i < pagerank.num;++i){
-    printf("%f ",pagerank.prValue[i] );
-  }
+
 
 
 }

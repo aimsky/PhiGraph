@@ -1,4 +1,5 @@
 #include "CSR.hpp"
+#include "CSC.hpp"
 #include "../src/utils/command.h"
 #include "../src/io/graph_io.h"
 #include <omp.h>
@@ -10,6 +11,7 @@ int parallel_main(int argc, char* argv[]) {
   printf("%s  %s\n",cmd.getArgument(0),cmd.getArgument(1) );
   phiLong n = atol(cmd.getArgument(1));
   char* fname = cmd.getArgument(2);
+  char* cscfname = cmd.getArgument(3);
 
   bool hasWeight = cmd.getOption("-w");
 
@@ -30,8 +32,21 @@ int parallel_main(int argc, char* argv[]) {
 
 
   io->writeGraphToFile(fname);
-
+  free(s);
+  free(c);
+  CSC* csc = new CSC(io->loadGraphFromFile(fname));
   io->iofree();
+  s = csc->getOffset();
+  c = csc->getEdges();
+  if(hasWeight){
+
+    io = new PhiGraphIO(n,csr->getEdgesNum(),s,c,w);
+  }else{
+    io = new PhiGraphIO(n,csr->getEdgesNum(),s,c);
+  }
+  io->writeGraphToFile(cscfname);
+
+
   //delete csr;
 
 }

@@ -40,7 +40,9 @@ utils/build/CMakeFiles
 utils/build/cmake_install.cmake
 utils/build/CMakeCache.txt
 utils/build/Makefile
+utils/build/www
 inputs/test2
 inputs/graph_1000000
+
 .tags
 .tags1
