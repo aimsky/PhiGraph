@@ -1,0 +1,20 @@
+#set compiler
+SET(CMAKE_CXX_COMPILER "g++")
+
+
+FIND_PACKAGE( OpenMP REQUIRED)
+if(OPENMP_FOUND)
+message("OPENMP FOUND")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+LINK_DIRECTORIES(../../lib)
+LINK_DIRECTORIES(/opt/lampp/lib)
+INCLUDE_DIRECTORIES(/opt/lampp/include)
+INCLUDE_DIRECTORIES(../../src)
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmysqlclient -I/usr/include/mysql/ -L/usr/lib/mysql -lz")
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+ADD_EXECUTABLE(sql main.cpp)
+TARGET_LINK_LIBRARIES(sql libphigraph.a)
+TARGET_LINK_LIBRARIES(sql libmysqlclient.so)

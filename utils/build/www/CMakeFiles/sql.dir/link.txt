@@ -1,0 +1,1 @@
+g++    -fopenmp -fopenmp     CMakeFiles/sql.dir/main.cpp.o  -o ../bin/sql  -L/home/wubo/project/PhiGraph/utils/../lib  -L/home/wubo/project/PhiGraph/utils/www/../../lib  -L/opt/lampp/lib -Wl,-Bstatic -lphigraph -Wl,-Bdynamic -lmysqlclient -Wl,-rpath,/home/wubo/project/PhiGraph/utils/../lib:/home/wubo/project/PhiGraph/utils/www/../../lib:/opt/lampp/lib 
