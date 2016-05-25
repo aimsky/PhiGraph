@@ -46,7 +46,7 @@ int parallel_main(int argc, char *argv[]) {
   //phiLong n = graph_init.getGraph().vertexNum;
   //VertexSubset* frontier = new VertexSubset(n,0);
   //for(int i = 0;i < 40;i++){
-  graph_engine.exec_vertex(pagerank,40);
+  graph_engine.exec_vertex(pagerank,true,40);
   //}
 
 

@@ -6,7 +6,7 @@
 
 int parallel_main(int argc, char* argv[]) {
 
-  command cmd(argc,argv,"[-s] [-w] [-m <numedges>] [-r <intseed>] [-a <a>] [-b <b>] [-c <c>] n <outFile>");
+  command cmd(argc,argv,"<csrFile> <cscFile>");
 
   printf("%s  %s\n",cmd.getArgument(0),cmd.getArgument(1) );
   //phiLong n = atol(cmd.getArgument(1));

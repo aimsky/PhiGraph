@@ -52,8 +52,6 @@ void VertexSubset::del(){
   if (!vertex.empty()) vertex.clear();
   omp_destroy_lock(&mylock);
 }
-long VertexSubset::numRows() { return n; }
-long VertexSubset::numNonzeros() { return m; }
 bool VertexSubset::isEmpty() { return m==0; }
 bool VertexSubset::isFull() { return m==n; }
 VertexSubset::~VertexSubset(){

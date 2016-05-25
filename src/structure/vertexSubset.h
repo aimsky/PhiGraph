@@ -31,8 +31,6 @@ public:
   void add(phiLong s);
   // delete the contents
   void del();
-  long numRows();
-  long numNonzeros();
   bool isEmpty();
   bool isFull();
   ~VertexSubset();

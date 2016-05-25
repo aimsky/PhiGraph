@@ -20,18 +20,7 @@ char *command::getArgument(int i) {
   return argv[i];
 }
 
-// looks for two filenames
-pair<char *, char *> command::IOFileNames() {
-  if (argc < 3)
-    badArgument();
-  return pair<char *, char *>(argv[argc - 2], argv[argc - 1]);
-}
 
-pair<int, char *> command::sizeAndFileName() {
-  if (argc < 3)
-    badArgument();
-  return pair<int, char *>(atoi(argv[argc - 2]), (char *)argv[argc - 1]);
-}
 
 bool command::getOption(string option) {
   for (int i = 1; i < argc; i++)

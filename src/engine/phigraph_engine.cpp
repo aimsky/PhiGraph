@@ -1,12 +1,13 @@
 
 #include "phigraph_engine.h"
 
-Timer* PhiGraphEngine::_tm = new Timer();
+
 int PhiGraphEngine::MIN_ITERATION_NUM = 4;
 PhiGraphEngine::PhiGraphEngine(Graph<Vertex>* graph){
   iteration = 0;
   phigraph = graph;
   machine_core_num = omp_get_num_procs();
+  _tm = new Timer();
   //threadNum = dynamicThreadNum(graph->vertexNum);
   //printf("threadNum:t\n", );
   //omp_set_num_threads(threadNum);
@@ -23,7 +24,7 @@ void PhiGraphEngine::engine_infor(int id){
     //printf("Thread Num:[%d]\n",threadNum);
   }if(id == 1){
     cout<<"running time:";
-    PhiGraphEngine::_tm->reportTime(running_time);
+    _tm->reportTime(running_time);
   }
 }
 
@@ -62,23 +63,34 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
 
 
 
-void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app){
-  threadNum = dynamicThreadNum(phigraph.vertexNum);
-  omp_set_num_threads(threadNum);
-  parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
-    //if(!app.before_iteration(i))
-      //break;
-    app.update(phigraph,i);
-    //if(!app.after_iteration(i))
-    //  break;
+void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool parallel){
+  if(parallel){
+    threadNum = dynamicThreadNum(phigraph.vertexNum);
+    omp_set_num_threads(threadNum);
+    parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+      //if(!app.before_iteration(i))
+        //break;
+      app.update(phigraph,i);
+      //if(!app.after_iteration(i))
+      //  break;
+    }
+  }else{
+    for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+      if(!app.before_iteration(i))
+        break;
+      app.update(phigraph,i);
+      if(!app.after_iteration(i))
+       break;
+    }
   }
+
 
 };
 
 
 void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset){
 
-  PhiGraphEngine::_tm->start();
+  _tm->start();
   if(vertexsubset != NULL){
     //loop until frontier is empty
     while(!vertexsubset->isEmpty()){
@@ -97,19 +109,19 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsu
         break;
     }
   }
-  running_time = PhiGraphEngine::_tm->next();
+  running_time = _tm->next();
   engine_infor(1);
   //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   //do user difine something after compution finish
   program.compution_finish();
 
 }
-void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,int iteration){
-  PhiGraphEngine::_tm->start();
+void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,bool parallel,int iteration){
+  _tm->start();
   for(int i = 0;i < iteration;i++){
-    vertexUpdate(*phigraph,program);
+    vertexUpdate(*phigraph,program,parallel);
   }
-  running_time = PhiGraphEngine::_tm->next();
+  running_time = _tm->next();
 
   //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
   program.compution_finish();

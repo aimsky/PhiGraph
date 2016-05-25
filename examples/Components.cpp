@@ -60,6 +60,6 @@ int parallel_main(int argc, char *argv[]) {
   Components components(graph_init.getGraph());
   phiLong n = graph_init.getGraph().vertexNum;
   //VertexSubset* frontier = new VertexSubset(n,0);
-  graph_engine.exec_vertex(components);
+  graph_engine.exec_vertex(components,false);
 
 }

@@ -4,7 +4,9 @@ Timer::Timer() {
   struct timezone tz = {0, 0};
   totalTime=0.0;
   totalWeight=0.0;
-  on=0; tzp = tz;}
+  on=0;
+  tzp = tz;
+}
 double Timer::getTime() {
   timeval now;
   gettimeofday(&now, &tzp);
@@ -69,13 +71,3 @@ void Timer::reportTotal(std::string str) {
 void Timer::reportNext() {reportTime(next());}
 
 void Timer::reportNext(std::string str) {std::cout << str << " : "; reportNext();}
-
-
-
-// static timer _tm;
-// #define timeStatement(_A,_string) _tm.start();  _A; _tm.reportNext(_string);
-// #define startTime() _tm.start();
-// #define stopTime(_weight,_str) _tm.reportStop(_weight,_str);
-// #define reportTime(_str) _tm.reportTotal(_str);
-// #define nextTime(_string) _tm.reportNext(_string);
-// #define nextTimeN() _tm.reportT(_tm.next());

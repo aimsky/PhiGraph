@@ -14,6 +14,14 @@ PhiGraphInit::PhiGraphInit(int argc, char *argv[]){
 Graph<Vertex>& PhiGraphInit::getGraph(){
   return *graph;
 }
+void PhiGraphInit::printInfor(int id){
+  if(id == 0){
+    printf("system is initing\n");
+  }else if(id == 1){
+    printf("Load graph successfully\n");
+    printf("vertex num:[%ld];edges num:[%ld] \n",graph->vertexNum,graph->edgeNum );
+  }
+}
 PhiGraphInit::~PhiGraphInit(){
   delete graphIO;
 
