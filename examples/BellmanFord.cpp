@@ -1,5 +1,5 @@
 
-#include "phigraph.h"
+#include "phigraph/phigraph.h"
 
 class BellmanFord:public PhiGraphProgram{
 public:

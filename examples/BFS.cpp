@@ -1,4 +1,4 @@
-#include "phigraph.h"
+#include "phigraph/phigraph.h"
 
 class BFS:public PhiGraphProgram{
 

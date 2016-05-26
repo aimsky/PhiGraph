@@ -1,4 +1,4 @@
-#include "phigraph.h"
+#include "phigraph/phigraph.h"
 class SSSP:public PhiGraphProgram{
 
   public:
@@ -48,7 +48,7 @@ class SSSP:public PhiGraphProgram{
           //#pragma omp critical
           phiDouble temp = distance[graph.vertex[nextVertexId].getOutVertexes(i)];
           if(!visit[graph.vertex[nextVertexId].getOutVertexes(i)] &&  (min + graph.vertex[nextVertexId].getOutWeight(i)) < temp){
-            
+
             phiCAS(&distance[graph.vertex[nextVertexId].getOutVertexes(i)],temp,graph.vertex[nextVertexId].getOutWeight(i)+min);
           }
         }

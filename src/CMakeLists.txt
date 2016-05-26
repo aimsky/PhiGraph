@@ -5,7 +5,7 @@ FILE(GLOB_RECURSE SRC_LIST "*.cpp")
 #SET(CMAKE_CXX_COMPILER "icpc")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp -openmp-link=static -mmic -vec -qopt-report=3 -O3")
 
-message(STATUS "LIB_CPP = ${SRC_LIST}")
+MESSAGE(STATUS "LIB_CPP = ${SRC_LIST}")
 
 FIND_PACKAGE( OpenMP REQUIRED)
 if(OPENMP_FOUND)
@@ -17,7 +17,12 @@ endif()
 
 ADD_LIBRARY(phigraph STATIC ${SRC_LIST})
 
-SET(CMAKE_INSTALL_PREFIX /usr/)
-
+SET(CMAKE_INSTALL_PREFIX /usr)
+SET(include_list "api" "engine" "io" "structure" "utils")
+FOREACH(_var ${include_list})
+  FILE(GLOB temp "${_var}/*.h")
+  INSTALL(FILES ${temp} DESTINATION include/phigraph/${_var})
+ENDFOREACH()
+INSTALL(FILES phigraph.h DESTINATION include/phigraph)
 INSTALL(TARGETS phigraph ARCHIVE DESTINATION lib)
 SET_TARGET_PROPERTIES(phigraph PROPERTIES VERSION 1.0 SOVERSION 1)

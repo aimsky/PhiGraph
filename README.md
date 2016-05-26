@@ -1,10 +1,14 @@
-#PhiGraph-基于MIC体系结构的单机图计算系统（本科毕业设计）
+#PhiGraph-基于MIC体系结构的单机图计算系统
 ##编译
 ```
 mkdir build
 cd build
 cmake ..
 make
+```
+##安装
+```
+make install
 ```
 ##运行
 测试代码所生成的执行文件在build/bin目录下
