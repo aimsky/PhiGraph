@@ -7,6 +7,7 @@
 #include <mm_malloc.h>
 #include <iostream>
 #include <omp.h>
+#include "../structure/phivector.h"
 //dynamic memorry aligned
 #define phimalloc(_n, _m) (_n *)_mm_malloc(_m*sizeof(_n),64)
 
@@ -63,6 +64,21 @@ inline bool phiCAS(ET *ptr, ET oldv, ET newv) {
     abort();
   }
 }
+inline phiDouble simd_sum(PhiVector<phiDouble>* vec){
+  phiDouble sum[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  #pragma simd
+  for(phiLong i =0;i < vec->y;i++){
+    sum[0] += vec->array[i][0];
+    sum[1] += vec->array[i][1];
+    sum[2] += vec->array[i][2];
+    sum[3] += vec->array[i][3];
+    sum[4] += vec->array[i][4];
+    sum[5] += vec->array[i][5];
+    sum[6] += vec->array[i][6];
+    sum[7] += vec->array[i][7];
+  }
+  return sum[0]+sum[1]+sum[2]+sum[3]+sum[4]+sum[5]+sum[6]+sum[7];
+}
 
 template <class ET>
 inline bool writeMin(ET *a, ET b) {
@@ -91,6 +107,7 @@ inline int dynamicThreadNum(int n,int min_each = MIN_ITERATION_NUM,int core_num 
   }
   return tn;
 }
+
 
 
 #endif

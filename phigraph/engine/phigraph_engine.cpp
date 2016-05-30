@@ -86,6 +86,31 @@ void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,b
 
 
 };
+void PhiGraphEngine::gsUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool parallel){
+  if(parallel){
+    threadNum = dynamicThreadNum(phigraph.vertexNum);
+    omp_set_num_threads(threadNum);
+    parallel_for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+      //if(!app.before_iteration(i))
+        //break;
+      PhiVector<double>* vec = app.gather(phigraph,i);
+      app.setter(phigraph,vec,i);
+      delete vec;
+      //if(!app.after_iteration(i))
+      //  break;
+    }
+  }else{
+    for(uphiLong i = 0;i < phigraph.vertexNum;i++){
+      if(!app.before_iteration(i))
+        break;
+      PhiVector<double>* vec = app.gather(phigraph,i);
+      app.setter(phigraph,vec,i);
+      delete vec;
+      if(!app.after_iteration(i))
+       break;
+    }
+  }
+}
 
 
 void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset){
@@ -120,6 +145,18 @@ void PhiGraphEngine::exec_vertex(PhiGraphProgram& program,bool parallel,int iter
   _tm->start();
   for(int i = 0;i < iteration;i++){
     vertexUpdate(*phigraph,program,parallel);
+  }
+  running_time = _tm->next();
+
+  //PhiGraphEngine::_tm->reportNext("RUNNING TIME:");
+  program.compution_finish();
+  engine_infor(1);
+
+}
+void PhiGraphEngine::exec_gs(PhiGraphProgram& program,bool parallel,int iteration){
+  _tm->start();
+  for(int i = 0;i < iteration;i++){
+    gsUpdate(*phigraph,program,parallel);
   }
   running_time = _tm->next();
 

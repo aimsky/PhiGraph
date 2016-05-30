@@ -17,10 +17,10 @@ public:
 
 
   void vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool parallel);
-
+  void gsUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool parallel);
   void exec_vertex(PhiGraphProgram& program,VertexSubset* vertexsubset);
   void exec_vertex(PhiGraphProgram& program,bool parallel,int iteration = 1);
-  void exec_gas(PhiGraphProgram& program);
+  void exec_gs(PhiGraphProgram& program,bool parallel,int iteration);
   void engine_infor(int id);
 
 private:

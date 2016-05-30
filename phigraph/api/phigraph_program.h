@@ -4,13 +4,17 @@
 #include "../structure/graph.h"
 #include "../structure/vertex.h"
 #include "../structure/vertexSubset.h"
+#include "../structure/phivector.h"
 class PhiGraphProgram{
 public:
   PhiGraphProgram(){};
 
   virtual void update(Graph<Vertex>& phigraph,VertexSubset* nextFrontier,uphiLong curVertex){};
   virtual void update(Graph<Vertex>& phigraph,uphiLong curVertex){};
-  
+  virtual PhiVector<phiDouble>* gather(Graph<Vertex>& phigraph,uphiLong curVertex){};
+
+  virtual void setter(Graph<Vertex>& phigraph,PhiVector<phiDouble>* vec,uphiLong curVertex){};
+
   /**
    * Called before an iteration starts.
    */
