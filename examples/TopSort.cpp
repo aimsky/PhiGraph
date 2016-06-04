@@ -2,13 +2,20 @@
 
 class TopSort:public PhiGraphProgram{
 public:
+  phiLong start;
   TopSort(Graph<Vertex>& phigraph){
     phiLong vertexNum = phigraph.vertexNum;
+    phiLong flag = 0;
     //sequence = phimalloc(phiLong,vertexNum);
     inDegree = phimalloc(phiLong,vertexNum);
     parallel_for(phiLong i = 0;i < vertexNum;++i){
       inDegree[i] = phigraph.vertex[i].getInDegree();
+      if(!flag && inDegree[i] == 0){
+        flag = 1;
+        start = i;
+      }
     }
+    printf("start=\n",start );
 
   }
   void update(Graph<Vertex>& graph,VertexSubset* nextFrontier,uphiLong curVertex){
@@ -43,7 +50,7 @@ int parallel_main(int argc, char *argv[]) {
   PhiGraphEngine graph_engine(&graph_init.getGraph());
   TopSort topsort(graph_init.getGraph());
   phiLong n = graph_init.getGraph().vertexNum;
-  VertexSubset* frontier = new VertexSubset(n,0);
+  VertexSubset* frontier = new VertexSubset(n,topsort.start);
   graph_engine.exec_vertex(topsort,frontier);
 
 }

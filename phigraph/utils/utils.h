@@ -66,8 +66,10 @@ inline bool phiCAS(ET *ptr, ET oldv, ET newv) {
 }
 inline phiDouble simd_sum(PhiVector<phiDouble>* vec){
   phiDouble sum[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  #pragma prefetch vec->array
   #pragma simd
   for(phiLong i =0;i < vec->y;i++){
+    #pragma prefetch vec->array[i]:2:8
     sum[0] += vec->array[i][0];
     sum[1] += vec->array[i][1];
     sum[2] += vec->array[i][2];

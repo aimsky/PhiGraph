@@ -48,9 +48,10 @@ VertexSubset* PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,VertexSubset*
     //printf("frontier:%ld\n",frontier->m );
     omp_set_num_threads(threadNum);
     omp_set_nested(true);
-    #pragma omp parallel for schedule(static,4)
-    for(uphiLong i = 0;i < frontier->m;i++){
 
+    #pragma omp parallel for schedule(dynamic,4)
+    for(uphiLong i = 0;i < frontier->m;i++){
+      #pragma prefetch frontier->vertex[i]:0:8
       //printf("ID: %d, Max threads: %d, Num threads: %d \n",omp_get_thread_num(), omp_get_max_threads(), omp_get_num_threads());
       uphiLong curVertex = frontier->vertex[i];
       app.update(phigraph,nextFrontier,curVertex);
@@ -87,6 +88,7 @@ void PhiGraphEngine::vertexUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,b
 
 };
 void PhiGraphEngine::gsUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool parallel){
+  //PhiVector<phiDouble>* phivector = new PhiVector<phiDouble>(phigraph.vertexNum);
   if(parallel){
     threadNum = dynamicThreadNum(phigraph.vertexNum);
     omp_set_num_threads(threadNum);
@@ -110,6 +112,7 @@ void PhiGraphEngine::gsUpdate(Graph<Vertex>& phigraph,PhiGraphProgram& app,bool 
        break;
     }
   }
+  //delete phivector;
 }
 
 
