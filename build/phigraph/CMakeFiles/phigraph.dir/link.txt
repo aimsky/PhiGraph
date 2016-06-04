@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../lib/libphigraph.a  CMakeFiles/phigraph.dir/engine/phigraph_init.cpp.o CMakeFiles/phigraph.dir/engine/phigraph_engine.cpp.o CMakeFiles/phigraph.dir/structure/vertexSubset.cpp.o CMakeFiles/phigraph.dir/structure/vertex.cpp.o CMakeFiles/phigraph.dir/io/graph_io.cpp.o CMakeFiles/phigraph.dir/utils/command.cpp.o CMakeFiles/phigraph.dir/utils/gettime.cpp.o
-/usr/bin/ranlib ../../lib/libphigraph.a
